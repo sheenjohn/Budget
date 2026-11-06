@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monthly Budget</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Budget">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#14212b">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACD0lEQVR42u3doXECQRSAYWAoAYdCn0VFxaBpgyoQVEEb6JioqLSRPtIAw9zuW+7Yx/f7dwO8bw7OLMvNblhI91r5CASH4BAcgkNwCA7BITgEh+CQ4BAcgkNwCA7BITgEh+AQHBIcgkNwCA7BITgEh+AQHIJDgkNwCA7BITgEh+AQHIJDcAgOCQ7BITj0zNZZ39jvqXhkf+XhDe4cFTKqp+DIL4OP/Dji2+UjJ45We+XD04rgEByCQ3AIDsEhOASH4BAcEhyCQ3AIDsEhOASH4BAcgkOCQ3AIDsEhOASHumiG8zmOh5/SkdvXh1Xlv3NUyKieUk84IjvmIzOO+Hb5yImj1V758LQiOASH4BAcgkOCQ3AIDsEhOASH4BAcgkPpW/sIIm0vn6Ujf+dvdw4yWk7BkV9GXz7gmGe7XfiAY7a9vr4POASH4BAcgkNwCA7BITgEh+CQ4BAcgkNwCA7BITgEh+AQHBIcgkNwCA7BITgEh+AQHIJDgkOz42j1r8GPr7O/tnm1j6/T6sS31z85bro7R9zHmCvEfYy5QnyvXZwpOOnXSsTH+NmIj/Gzke32ctrk1L856nyUTtX5KJ2q23FH55AuN7vBLy95WhEcgkNwCA7BITgEh+AQHBIcgkNwCA7BITgEh+AQHIJDgkNwCA7BITgEh+AQHIJDcAgOCQ7BITgEh+AQHIJDcAgOvWn/rRRKLQYFVPwAAAAASUVORK5CYII=">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef1f4;--card:#fff;--ink:#14212b;--mute:#5d6c78;--line:#dde3e8;--hero:#14212b;--heroink:#fff;--pos:#1f8a5b;--neg:#c2410c;--field:#f6f8fa}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#0e151b;--card:#18222b;--ink:#e8eef3;--mute:#93a3b0;--line:#2a3742;--hero:#223442;--heroink:#fff;--pos:#4cc58f;--neg:#f08a5a;--field:#111a21}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0e151b;--card:#18222b;--ink:#e8eef3;--mute:#93a3b0;--line:#2a3742;--hero:#223442;--heroink:#fff;--pos:#4cc58f;--neg:#f08a5a;--field:#111a21}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.1rem;font-weight:600;margin:0 0 14px;color:var(--mute)}
+.hero{background:var(--hero);color:var(--heroink);border-radius:20px;padding:24px 22px}
+.hero small{opacity:.7;font-size:.9rem}
+.hero .big{font-size:clamp(2.8rem,12vw,4.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:4px 0 14px;font-variant-numeric:tabular-nums}
+.bar{display:flex;height:12px;border-radius:6px;overflow:hidden;background:rgba(255,255,255,.15)}
+.bar i{display:block;height:100%;transition:width .3s}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:12px;font-size:.85rem;opacity:.9}
+.legend b{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card h2{font-size:1rem;margin:0 0 12px}
+label{display:block;font-size:.85rem;color:var(--mute);margin-bottom:4px}
+input,select{font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;min-width:0}
+input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #3b82f6;outline-offset:1px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.stat span{font-size:.8rem;color:var(--mute);display:block}
+.stat strong{font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums}
+.pos{color:var(--pos)}.neg{color:var(--neg)}
+.hint{color:var(--mute);font-size:.9rem;margin:0}
+.cat{margin-top:14px;border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+.cat-h{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);font-weight:600}
+.cat-h .dot{width:12px;height:12px;border-radius:4px}
+.cat-h .sp{flex:1}
+.cat-h span.sub{font-variant-numeric:tabular-nums}
+.cat-h small{color:var(--mute);font-weight:400;min-width:48px;text-align:right}
+.row{display:grid;grid-template-columns:1fr 104px 52px 34px;gap:8px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row input{padding:8px 10px}
+.row .nm{border-color:transparent;background:transparent}
+.row .nm:hover,.row .nm:focus{background:var(--field);border-color:var(--line)}
+.row .am{text-align:right;font-variant-numeric:tabular-nums}
+.row .pc{text-align:right;color:var(--mute);font-size:.9rem;font-variant-numeric:tabular-nums}
+.x{border:0;background:transparent;color:var(--mute);font-size:1.2rem;cursor:pointer;border-radius:8px;height:34px}
+.x:hover{color:var(--neg)}
+.colhead{display:grid;grid-template-columns:1fr 104px 52px 34px;gap:8px;padding:6px 16px;font-size:.78rem;color:var(--mute);border-bottom:1px solid var(--line)}
+.colhead span:nth-child(2),.colhead span:nth-child(3){text-align:right}
+.add{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.add .full{grid-column:1/-1}
+@media(min-width:640px){.add{grid-template-columns:1.2fr 1.4fr 1fr auto;align-items:end}.add .full{grid-column:auto}}
+button.btn{font:inherit;font-weight:600;border:0;border-radius:10px;padding:10px 16px;cursor:pointer;background:var(--ink);color:var(--bg)}
+button.btn.alt{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+details.card summary{cursor:pointer;font-weight:600}
+details .body{margin-top:12px}
+pre{background:var(--field);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto;font-size:.78rem;margin:8px 0}
+.msg{font-size:.9rem;color:var(--mute);margin-top:8px;min-height:1.2em}
+ol{padding-left:20px;margin:8px 0;color:var(--mute);font-size:.92rem}
+.empty{padding:20px 16px;color:var(--mute)}
+.mnav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.mnav input{flex:1;text-align:center;font-weight:600}
+.mnav .btn{padding:8px 16px;font-size:1.2rem;line-height:1}
+.hrow,.hhead{display:grid;grid-template-columns:84px 1fr 64px 64px;gap:10px;align-items:center;width:100%}
+.hrow{font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--line);padding:10px 4px;text-align:left;cursor:pointer}
+.hrow.on{background:var(--field);font-weight:600}
+.hbar{height:8px;background:var(--field);border-radius:4px;overflow:hidden}
+.hbar i{display:block;height:100%;background:#6366f1}
+.hv,.hs{text-align:right;font-variant-numeric:tabular-nums;font-size:.9rem}
+.hhead{font-size:.78rem;color:var(--mute);padding:0 4px 6px}
+.hhead span:nth-child(3),.hhead span:nth-child(4){text-align:right}
+</style>
+</head>
+<body>
+<main>
+<div class="mnav"><button class="btn alt" id="prevM" aria-label="Previous month">&lsaquo;</button><input type="month" id="monthPick" aria-label="Month"><button class="btn alt" id="nextM" aria-label="Next month">&rsaquo;</button></div>
+
+<section class="hero" aria-live="polite">
+  <small id="heroLbl">Total monthly outflow</small>
+  <div class="big" id="total">0</div>
+  <div class="bar" id="bar"></div>
+  <div class="legend" id="legend"></div>
+</section>
+
+<div class="grid">
+  <section class="card">
+    <h2>Monthly net income</h2>
+    <label for="income">Optional. Enter what you take home each month</label>
+    <input id="income" type="number" inputmode="decimal" min="0" placeholder="e.g. 6500">
+    <div class="stats" id="stats"><p class="hint" style="grid-column:1/-1">Add your income to see surplus and savings rate.</p></div>
+  </section>
+  <section class="card">
+    <h2>Add an expense</h2>
+    <div class="add">
+      <div><label for="nc">Category</label><input id="nc" list="cats" placeholder="Pick or type new"></div>
+      <div><label for="nn">Item name</label><input id="nn" placeholder="e.g. Gym"></div>
+      <div><label for="na">Amount</label><input id="na" type="number" inputmode="decimal" min="0" placeholder="0"></div>
+      <div class="full"><button class="btn" id="addBtn" style="width:100%">Add expense</button></div>
+    </div>
+    <datalist id="cats"></datalist>
+  </section>
+</div>
+
+<div id="list"></div>
+
+<section class="card" style="margin-top:14px"><h2>Month by month</h2>
+  <div class="hhead"><span>Month</span><span></span><span>Outflow</span><span>Surplus</span></div>
+  <div id="hist"></div></section>
+<div class="actions">
+  <button class="btn" id="csvBtn">Export month (CSV / Excel)</button>
+  <button class="btn" id="csvAll">Export all months</button>
+  <button class="btn alt" id="resetBtn">Reset month</button>
+  <button class="btn alt" id="delM">Delete month</button>
+</div>
+<div class="msg" id="exportMsg"></div>
+
+<details class="card" style="margin-top:14px">
+  <summary>Link Google Sheets</summary>
+  <div class="body">
+    <ol>
+      <li>Create a Google Sheet, then open Extensions &rarr; Apps Script.</li>
+      <li>Paste the script below and choose Deploy &rarr; New deployment &rarr; Web app (access: Anyone).</li>
+      <li>Paste the Web app URL here and select Sync now.</li>
+    </ol>
+    <pre id="script">function doPost(e){
+  var d=JSON.parse(e.postData.contents);
+  var ss=SpreadsheetApp.getActiveSpreadsheet();
+  var s=ss.getSheetByName(d.month)||ss.insertSheet(d.month);
+  s.clear();
+  s.appendRow(['Category','Item','Amount','Share %']);
+  d.rows.forEach(function(r){s.appendRow(r)});
+  s.appendRow(['','Total',d.total,100]);
+  if(d.income!==null){s.appendRow(['','Net income',d.income,'']);
+    s.appendRow(['','Surplus',d.income-d.total,'']);}
+  return ContentService.createTextOutput('ok');
+}</pre>
+    <label for="hook">Web app URL</label>
+    <input id="hook" type="url" placeholder="https://script.google.com/macros/s/…/exec">
+    <div class="actions">
+      <button class="btn" id="syncBtn">Sync now</button>
+      <button class="btn alt" id="copyScript">Copy script</button>
+      <button class="btn alt" id="copyTsv">Copy as table for Sheets</button>
+    </div>
+    <div class="msg" id="syncMsg"></div>
+  </div>
+</details>
+</main>
+
+<script>
+const DEFAULTS=[
+ ["Remittance & Investments","Send to India",1900],["Remittance & Investments","Gold EMI",800],
+ ["Housing & Utilities","Rent",1250],["Housing & Utilities","Travelling",200],["Housing & Utilities","SIM / Mobile Plan",70],
+ ["Food & Dining","Mess Food",750],["Food & Dining","Outside Food",500]];
+const COLORS=["#6366f1","#e0892b","#2fa36b","#d6497f","#0ea5c6","#a16bd6","#c9a227"];
+let uid=0,items=[],income="",months={},cur="";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const fmt=n=>Number(n||0).toLocaleString(undefined,{maximumFractionDigits:2});
+const load=()=>DEFAULTS.map(d=>({id:++uid,cat:d[0],name:d[1],amt:d[2]}));
+const ym=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+const label=(k,sh)=>new Date(k+"-01T00:00").toLocaleDateString(undefined,{month:sh?"short":"long",year:"numeric"});
+function save(){try{months[cur]={items,income};localStorage.setItem("budget.v2",JSON.stringify({months,cur,hook:$("hook").value}))}catch(e){}}
+function restore(){
+  let hook="";
+  try{let st=JSON.parse(localStorage.getItem("budget.v2")||"null");
+    if(!st){const o=JSON.parse(localStorage.getItem("budget.v1")||"null");
+      if(o&&Array.isArray(o.items))st={months:{[ym(new Date())]:{items:o.items,income:o.income||"7000"}},hook:o.hook}}
+    if(st&&st.months){months=st.months;hook=st.hook||""}}catch(e){}
+  $("hook").value=hook;
+  uid=Math.max(0,...Object.values(months).flatMap(m=>m.items.map(i=>i.id)));
+  goMonth(ym(new Date()));
+}
+function goMonth(k){
+  if(!k)return;
+  if(cur&&months[cur])months[cur]={items,income};
+  if(!months[k]){
+    const ks=Object.keys(months).sort(),prior=ks.filter(x=>x<k).pop()||ks[0];
+    if(prior){items=months[prior].items.map(i=>({...i,id:++uid}));income=months[prior].income}
+    else{items=load();income="7000"}
+    months[k]={items,income};
+  }else{items=months[k].items;income=months[k].income}
+  cur=k;$("monthPick").value=k;$("income").value=income;render();save();
+}
+function renderHistory(){
+  months[cur]={items,income};
+  const tot=m=>m.items.reduce((a,i)=>a+(+i.amt||0),0),ks=Object.keys(months).sort().reverse(),mx=Math.max(1,...ks.map(k=>tot(months[k])));
+  $("hist").innerHTML=ks.map(k=>{const m=months[k],t=tot(m),inc=parseFloat(m.income),has=isFinite(inc)&&m.income!=="",sur=inc-t;
+    return `<button class="hrow${k===cur?" on":""}" data-m="${k}"><span>${label(k,1)}</span><span class="hbar"><i style="width:${t/mx*100}%"></i></span><span class="hv">${fmt(t)}</span><span class="hs ${has?(sur>=0?"pos":"neg"):""}">${has?(sur<0?"−":"+")+fmt(Math.abs(sur)):"–"}</span></button>`}).join("");
+}
+$("hist").addEventListener("click",e=>{const b=e.target.closest("[data-m]");if(b){goMonth(b.dataset.m);scrollTo({top:0,behavior:"smooth"})}});
+const shift=n=>{const [y,m]=cur.split("-").map(Number);goMonth(ym(new Date(y,m-1+n,1)))};
+$("prevM").onclick=()=>shift(-1);$("nextM").onclick=()=>shift(1);$("monthPick").onchange=e=>goMonth(e.target.value);
+$("delM").onclick=()=>{if(!confirm("Delete all data for "+label(cur)+"?"))return;
+  const k=cur,rest=Object.keys(months).filter(x=>x!==k).sort();delete months[k];cur="";
+  goMonth(rest.length?(rest.filter(x=>x<k).pop()||rest[0]):ym(new Date()))};
+const total=()=>items.reduce((s,i)=>s+(+i.amt||0),0);
+const cats=()=>[...new Set(items.map(i=>i.cat))];
+const col=c=>COLORS[Math.max(0,cats().indexOf(c))%COLORS.length];
+const pct=(a,t)=>t>0?(a/t*100):0;
+
+function render(){
+  const cs=cats();
+  $("cats").innerHTML=cs.map(c=>`<option value="${esc(c)}">`).join("");
+  $("list").innerHTML=cs.length?cs.map(c=>{
+    const rows=items.filter(i=>i.cat===c);
+    return `<section class="cat"><div class="cat-h"><span class="dot" style="background:${col(c)}"></span><span>${esc(c)}</span><span class="sp"></span><span class="sub" data-sub="${esc(c)}"></span><small data-subp="${esc(c)}"></small></div>
+    <div class="colhead"><span>Item</span><span>Amount</span><span>Share</span><span></span></div>
+    ${rows.map(i=>`<div class="row"><input class="nm" data-n="${i.id}" value="${esc(i.name)}" aria-label="Item name">
+      <input class="am" data-a="${i.id}" type="number" inputmode="decimal" min="0" value="${i.amt}" aria-label="Amount for ${esc(i.name)}">
+      <span class="pc" data-p="${i.id}"></span><button class="x" data-d="${i.id}" aria-label="Delete ${esc(i.name)}">&times;</button></div>`).join("")}</section>`}).join("")
+    :`<div class="cat"><div class="empty">No expenses yet. Add your first one above.</div></div>`;
+  calc();
+}
+function calc(){
+  const t=total(),cs=cats();
+  $("total").textContent=fmt(t);$("heroLbl").textContent="Total outflow for "+label(cur);renderHistory();
+  $("bar").innerHTML=cs.map(c=>`<i style="width:${pct(items.filter(i=>i.cat===c).reduce((s,i)=>s+(+i.amt||0),0),t)}%;background:${col(c)}"></i>`).join("");
+  $("legend").innerHTML=cs.map(c=>`<span><b style="background:${col(c)}"></b>${esc(c)}</span>`).join("");
+  items.forEach(i=>{const e=document.querySelector(`[data-p="${i.id}"]`);if(e)e.textContent=pct(+i.amt||0,t).toFixed(1)+"%"});
+  cs.forEach(c=>{const s=items.filter(i=>i.cat===c).reduce((a,i)=>a+(+i.amt||0),0);
+    const a=[...document.querySelectorAll("[data-sub]")].find(e=>e.dataset.sub===c),b=[...document.querySelectorAll("[data-subp]")].find(e=>e.dataset.subp===c);
+    if(a)a.textContent=fmt(s);if(b)b.textContent=pct(s,t).toFixed(1)+"%"});
+  const inc=parseFloat(income);
+  if(isFinite(inc)&&income!==""){const sur=inc-t,rate=inc>0?sur/inc*100:0,cl=sur>=0?"pos":"neg";
+    $("stats").innerHTML=`<div class="stat"><span>Monthly surplus</span><strong class="${cl}">${sur<0?"−":""}${fmt(Math.abs(sur))}</strong></div><div class="stat"><span>Savings rate</span><strong class="${cl}">${rate.toFixed(1)}%</strong></div>`}
+  else $("stats").innerHTML=`<p class="hint" style="grid-column:1/-1">Add your income to see surplus and savings rate.</p>`;
+}
+$("list").addEventListener("input",e=>{
+  const t=e.target,a=t.dataset.a,n=t.dataset.n;
+  if(a){items.find(i=>i.id==a).amt=Math.max(0,parseFloat(t.value)||0);calc();save()}
+  if(n){items.find(i=>i.id==n).name=t.value;save()}
+});
+$("list").addEventListener("click",e=>{const d=e.target.dataset.d;if(d){items=items.filter(i=>i.id!=d);render();save()}});
+$("income").addEventListener("input",e=>{income=e.target.value;calc();save()});
+$("addBtn").onclick=()=>{
+  const c=$("nc").value.trim(),n=$("nn").value.trim(),a=parseFloat($("na").value);
+  if(!c||!n||!isFinite(a)||a<0){(!c?$("nc"):!n?$("nn"):$("na")).focus();return}
+  items.push({id:++uid,cat:c,name:n,amt:a});$("nn").value="";$("na").value="";render();save();$("nn").focus();
+};
+["nc","nn","na"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")$("addBtn").click()}));
+$("resetBtn").onclick=()=>{if(confirm("Reset "+label(cur)+" to the default expenses?")){items=load();render();save()}};
+
+function rowsData(its=items){const t=its.reduce((a,i)=>a+(+i.amt||0),0);return [...new Set(its.map(i=>i.cat))].flatMap(c=>its.filter(i=>i.cat===c).map(i=>[c,i.name,+i.amt||0,+pct(+i.amt||0,t).toFixed(2)]))}
+function csv(){
+  const q=v=>/[",\n]/.test(v)?'"'+String(v).replace(/"/g,'""')+'"':v,t=total(),inc=parseFloat(income);
+  const L=[["Category","Item","Amount","Share %"],...rowsData(),["","Total outflow",t,100]];
+  if(isFinite(inc)&&income!==""){L.push(["","Net income",inc,""],["","Surplus",inc-t,""],["","Savings rate %",inc>0?+((inc-t)/inc*100).toFixed(2):0,""])}
+  return L.map(r=>r.map(q).join(",")).join("\n");
+}
+function csvAll(){
+  const q=v=>/[",\n]/.test(v)?'"'+String(v).replace(/"/g,'""')+'"':v,L=[["Month","Category","Item","Amount","Share %"]];
+  Object.keys(months).sort().forEach(k=>{const m=months[k],t=m.items.reduce((a,i)=>a+(+i.amt||0),0),inc=parseFloat(m.income);
+    rowsData(m.items).forEach(r=>L.push([k,...r]));L.push([k,"","Total outflow",t,100]);
+    if(isFinite(inc)&&m.income!=="")L.push([k,"","Net income",inc,""],[k,"","Surplus",inc-t,""])});
+  return L.map(r=>r.map(q).join(",")).join("\n");
+}
+async function saveCsv(name,text){
+  const blob=new Blob(["\ufeff"+text],{type:"text/csv"});
+  try{const d=await claude.use("downloads");
+    if(d){await d.save({filename:name,data:blob});$("exportMsg").textContent="CSV ready. Open it in Excel or Google Sheets.";return}}catch(e){if(e&&e.code==="declined")return}
+  try{const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();$("exportMsg").textContent="CSV downloaded."}catch(e){$("exportMsg").textContent="Download isn’t available here. Use “Copy as table for Sheets” below."}
+}
+$("csvBtn").onclick=()=>saveCsv("expenses-"+cur+".csv",csv());
+$("csvAll").onclick=()=>saveCsv("expenses-all-months.csv",csvAll());
+const tsv=()=>["Category\tItem\tAmount\tShare %",...rowsData().map(r=>r.join("\t")),"\tTotal\t"+total()+"\t100"].join("\n");
+async function copy(s,m){try{await navigator.clipboard.writeText(s);$("syncMsg").textContent=m}catch(e){$("syncMsg").textContent="Copy was blocked. Select the text and copy it manually."}}
+$("copyScript").onclick=()=>copy($("script").textContent,"Script copied.");
+$("copyTsv").onclick=()=>copy(tsv(),"Copied. Paste into cell A1 of your sheet.");
+$("hook").addEventListener("change",save);
+$("syncBtn").onclick=async()=>{
+  const u=$("hook").value.trim();if(!/^https:\/\/script\.google\.com\//.test(u)){$("syncMsg").textContent="Enter a Web app URL that starts with https://script.google.com/";return}
+  const inc=parseFloat(income);$("syncMsg").textContent="Syncing…";
+  try{await fetch(u,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify({month:cur,rows:rowsData(),total:total(),income:isFinite(inc)&&income!==""?inc:null})});
+    $("syncMsg").textContent="Sent. Check the tab for "+cur+" in your sheet."}
+  catch(e){$("syncMsg").textContent="This page can’t reach Google from here. Use “Copy as table for Sheets” or open the app in your own browser to sync."}
+};
+
+restore();
+</script>
+</body>
+</html>
